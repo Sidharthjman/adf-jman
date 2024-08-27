@@ -1,0 +1,23 @@
+{
+	"name": "DS_orders_merged",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_BLOB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "orders_combined",
+				"container": "assesment-consolidated"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

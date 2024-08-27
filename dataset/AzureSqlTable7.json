@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlTable7",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_assesment_database",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "prep",
+			"table": "fact_table"
+		}
+	}
+}

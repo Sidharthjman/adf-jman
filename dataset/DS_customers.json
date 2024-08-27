@@ -1,0 +1,23 @@
+{
+	"name": "DS_customers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_BLOB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "customers_combined",
+				"container": "assesment-consolidated"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

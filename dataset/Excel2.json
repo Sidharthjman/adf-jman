@@ -1,0 +1,21 @@
+{
+	"name": "Excel2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_BLOB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "1",
+				"container": "assesment-input"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	}
+}

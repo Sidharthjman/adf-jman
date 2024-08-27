@@ -1,0 +1,140 @@
+{
+	"name": "DL_cleaning_data",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable3",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable5",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable7",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "window1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "select3"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as string,",
+				"          FirstName as string,",
+				"          LastName as string,",
+				"          Email as string,",
+				"          PhoneNumber as string,",
+				"          Address as string,",
+				"          City as string,",
+				"          State as string,",
+				"          ZipCode as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          OrderID as string,",
+				"          ProductID as string,",
+				"          ProductName as string,",
+				"          Quantity as string,",
+				"          OrderTimestamp as string,",
+				"          Price as string,",
+				"          CustomerID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source1, source2 join(source1@CustomerID == source2@CustomerID,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"select2 window(over(CustomerID),",
+				"     asc(CustomerID, true),",
+				"     RNK = rowNumber()) ~> window1",
+				"window1 filter(RNK==1) ~> filter1",
+				"join1 select(mapColumn(",
+				"          CustomerID = source1@CustomerID,",
+				"          FirstName,",
+				"          LastName,",
+				"          Email,",
+				"          PhoneNumber,",
+				"          Address,",
+				"          City,",
+				"          State,",
+				"          ZipCode,",
+				"          Country,",
+				"          OrderID,",
+				"          ProductID,",
+				"          ProductName,",
+				"          Quantity,",
+				"          OrderTimestamp,",
+				"          Price",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"filter1 select(mapColumn(",
+				"          CustomerID,",
+				"          FirstName,",
+				"          LastName,",
+				"          Email,",
+				"          PhoneNumber,",
+				"          Address,",
+				"          City,",
+				"          State,",
+				"          ZipCode,",
+				"          Country,",
+				"          OrderID,",
+				"          ProductID,",
+				"          ProductName,",
+				"          Quantity,",
+				"          OrderTimestamp,",
+				"          Price",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}
