@@ -1,0 +1,9 @@
+{
+	"name": "trainingfactory001",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "817bb62b-e8dc-49a2-b795-6e6dbecedc89",
+		"tenantId": "2800c0a0-70e9-49be-8733-faeaa6aced99"
+	}
+}
