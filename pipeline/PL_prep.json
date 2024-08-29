@@ -1,0 +1,67 @@
+{
+	"name": "PL_prep",
+	"properties": {
+		"activities": [
+			{
+				"name": "DL_prep",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DL_prep",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"tablename": "Result",
+								"schemaname": "raw"
+							},
+							"source2": {
+								"tablename": "User",
+								"schemaname": "raw"
+							},
+							"sink1": {
+								"tablename": "Result",
+								"schemaname": "prep"
+							},
+							"sink2": {
+								"tablename": "User",
+								"schemaname": "prep"
+							}
+						},
+						"linkedServiceParameters": {
+							"source1": {
+								"schemaLinkedService": {
+									"tablename": "Result",
+									"schemaname": "raw"
+								}
+							},
+							"sink1": {
+								"schemaLinkedService": {
+									"tablename": "Result",
+									"schemaname": "prep"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "mini_project"
+		},
+		"annotations": []
+	}
+}

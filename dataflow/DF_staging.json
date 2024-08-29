@@ -1,5 +1,5 @@
 {
-	"name": "DL_prep",
+	"name": "DF_staging",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -37,10 +37,28 @@
 			],
 			"transformations": [
 				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "join1"
+				},
+				{
 					"name": "derivedColumn1"
 				},
 				{
-					"name": "select1"
+					"name": "join2"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "aggregate3"
+				},
+				{
+					"name": "aggregate4"
 				}
 			],
 			"scriptLines": [
@@ -56,47 +74,49 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1",
 				"source(output(",
-				"          userID as string,",
+				"          userID as integer,",
 				"          name as string,",
-				"          password as string,",
 				"          email as string,",
-				"          admin as string",
+				"          admin as boolean",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source2",
-				"source1 derive(mark = iifNull(mark, 0, mark),",
-				"          CreatorID = iif(\r",
-				"    isNull(CreatorID) && startsWith(QuizID, 'tam'), 4,\r",
-				"    iif(\r",
-				"        isNull(CreatorID) && startsWith(QuizID, 'mat'), 1,\r",
-				"        iif(\r",
-				"            isNull(CreatorID) && startsWith(QuizID, 'phy'), 2,\r",
-				"            iif(\r",
-				"                isNull(CreatorID) && startsWith(QuizID, 'che'), 3,\r",
-				"                iif(\r",
-				"                    isNull(CreatorID) && startsWith(QuizID, 'bio'), 5,\r",
-				"                    iif(\r",
-				"                        isNull(CreatorID) && startsWith(QuizID, 'eng'), 6,\r",
-				"                        CreatorID\r",
-				"                    )\r",
-				"                )\r",
-				"            )\r",
-				"        )\r",
-				"    )\r",
-				")\r",
-				",",
-				"          Sub_date = iifNull(Sub_date, 'unknown', Sub_date)) ~> derivedColumn1",
-				"source2 select(mapColumn(",
-				"          userID,",
+				"source1 aggregate(groupBy(CreatorID),",
+				"     total_quizzes_conducted = count(CreatorID)) ~> aggregate1",
+				"source2, aggregate1 join(userID == CreatorID,",
+				"     joinType:'outer',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 derive(total_quizzes_conducted = iif(isNull(total_quizzes_conducted), toInteger(0), toInteger(total_quizzes_conducted))\r",
+				") ~> derivedColumn1",
+				"derivedColumn1, source1 join(source2@userID == source1@userID,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"join2 split(admin == true(),",
+				"     disjoint: false) ~> split1@(admin, student)",
+				"split1@student aggregate(groupBy(split1@student@userID,",
 				"          name,",
 				"          email,",
-				"          admin",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"          QuizID,",
+				"          mark,",
+				"          Sub_date),",
+				"     total_quizzes_attended = count(split1@student@userID)) ~> aggregate2",
+				"split1@admin aggregate(groupBy(split1@admin@userID,",
+				"          name,",
+				"          email,",
+				"          total_quizzes_conducted),",
+				"     {split1@admin@userID} = max(split1@admin@userID)) ~> aggregate3",
+				"aggregate2 aggregate(groupBy(userID,",
+				"          name,",
+				"          email),",
+				"     total_marks = sum(mark),",
+				"          total_quizes_attended = count(userID)) ~> aggregate4",
+				"aggregate3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          userID as string,",
@@ -109,12 +129,11 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     recreate:true,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-				"select1 sink(allowSchemaDrift: true,",
+				"aggregate4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          userID as string,",

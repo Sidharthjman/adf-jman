@@ -29,6 +29,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": {
+							"value": "IF OBJECT_ID('raw.Result', 'U') IS NOT NULL \nDROP TABLE raw.Result;\n",
+							"type": "Expression"
+						},
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -58,7 +62,8 @@
 						"referenceName": "DS_sql",
 						"type": "DatasetReference",
 						"parameters": {
-							"tablename": "Result"
+							"tablename": "Result",
+							"schemaname": "raw"
 						}
 					}
 				]
@@ -66,7 +71,14 @@
 			{
 				"name": "Copy data2",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -90,6 +102,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": {
+							"value": "IF OBJECT_ID('raw.[User]', 'U') IS NOT NULL \nDROP TABLE raw.[User];\n",
+							"type": "Expression"
+						},
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -119,12 +135,16 @@
 						"referenceName": "DS_sql",
 						"type": "DatasetReference",
 						"parameters": {
-							"tablename": "User"
+							"tablename": "User",
+							"schemaname": "raw"
 						}
 					}
 				]
 			}
 		],
+		"folder": {
+			"name": "mini_project"
+		},
 		"annotations": []
 	}
 }
