@@ -1,6 +1,9 @@
 {
 	"name": "DL_prep",
 	"properties": {
+		"folder": {
+			"name": "quizapp"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
@@ -85,8 +88,7 @@
 				"            )\r",
 				"        )\r",
 				"    )\r",
-				")\r",
-				",",
+				"),",
 				"          Sub_date = iifNull(Sub_date, 'unknown', Sub_date)) ~> derivedColumn1",
 				"source2 select(mapColumn(",
 				"          userID,",

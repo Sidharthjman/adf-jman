@@ -1,6 +1,9 @@
 {
 	"name": "DF_staging",
 	"properties": {
+		"folder": {
+			"name": "quizapp"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
@@ -90,8 +93,7 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> join1",
-				"join1 derive(total_quizzes_conducted = iif(isNull(total_quizzes_conducted), toInteger(0), toInteger(total_quizzes_conducted))\r",
-				") ~> derivedColumn1",
+				"join1 derive(total_quizzes_conducted = iif(isNull(total_quizzes_conducted), toInteger(0), toInteger(total_quizzes_conducted))) ~> derivedColumn1",
 				"derivedColumn1, source1 join(source2@userID == source1@userID,",
 				"     joinType:'left',",
 				"     matchType:'exact',",

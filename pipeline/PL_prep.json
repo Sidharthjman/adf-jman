@@ -35,20 +35,6 @@
 								"tablename": "User",
 								"schemaname": "prep"
 							}
-						},
-						"linkedServiceParameters": {
-							"source1": {
-								"schemaLinkedService": {
-									"tablename": "Result",
-									"schemaname": "raw"
-								}
-							},
-							"sink1": {
-								"schemaLinkedService": {
-									"tablename": "Result",
-									"schemaname": "prep"
-								}
-							}
 						}
 					},
 					"compute": {
