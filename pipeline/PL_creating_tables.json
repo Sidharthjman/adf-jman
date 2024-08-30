@@ -1,0 +1,107 @@
+{
+	"name": "PL_creating_tables",
+	"properties": {
+		"activities": [
+			{
+				"name": "DF_cleaning",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_cleaning",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"tablename": "products",
+								"schemaname": "raw"
+							},
+							"sink1": {
+								"tablename": "AutomationComponents",
+								"schemaname": "prep"
+							},
+							"sink2": {
+								"tablename": "WiringComponents",
+								"schemaname": "prep"
+							},
+							"sink3": {
+								"tablename": "Fasteners",
+								"schemaname": "prep"
+							},
+							"sink4": {
+								"tablename": "LabCleanRoomSupplies",
+								"schemaname": "prep"
+							},
+							"sink5": {
+								"tablename": "MachiningTools",
+								"schemaname": "prep"
+							},
+							"sink6": {
+								"tablename": "MaterialHandlingStorage",
+								"schemaname": "prep"
+							},
+							"sink7": {
+								"tablename": "Materials",
+								"schemaname": "prep"
+							},
+							"sink8": {
+								"tablename": "MoldHeatingCoolingTechnology",
+								"schemaname": "prep"
+							},
+							"sink9": {
+								"tablename": "PlasticMoldComponents",
+								"schemaname": "prep"
+							},
+							"sink10": {
+								"tablename": "PressDieComponents",
+								"schemaname": "prep"
+							},
+							"sink12": {
+								"tablename": "ProcessingTools",
+								"schemaname": "prep"
+							},
+							"sink11": {
+								"tablename": "SafetyGeneralSupplies",
+								"schemaname": "prep"
+							},
+							"sink13": {
+								"tablename": "ElectricalComponents",
+								"schemaname": "prep"
+							}
+						},
+						"linkedServiceParameters": {
+							"sink12": {
+								"schemaLinkedService": {
+									"tablename": "SafetyGeneralSupplies",
+									"schemaname": "prep"
+								}
+							},
+							"sink11": {
+								"schemaLinkedService": {
+									"tablename": "SafetyGeneralSupplies",
+									"schemaname": "prep"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "mini_project"
+		},
+		"annotations": []
+	}
+}
