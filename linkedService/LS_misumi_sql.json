@@ -1,0 +1,17 @@
+{
+	"name": "LS_misumi_sql",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "sql-trainig-server01.database.windows.net",
+			"database": "misumi_db",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "sidharth",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEUyM0ZGMjFCLUY0NjQtNDVDRC1BRTg5LTlDRDJFMUFBRThBN184NGJlZDc2NS1iN2FkLTQyMWMtODRkOS01YWUzOTBjNGE3NjkiDQp9"
+		}
+	}
+}
